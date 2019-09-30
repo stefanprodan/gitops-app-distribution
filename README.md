@@ -2,13 +2,19 @@
 
 As a software vendor I want to distribute my application in a reliable manner to service providers
 that will host the app on their own Kubernetes clusters e.g. EKS, AKS/Linkerd, GKE/Istio.
-The application is composed of several micro-services: [frontend](clusters/base/frontend),
+The application is composed of several containerized micro-services: [frontend](clusters/base/frontend),
 [backend](clusters/base/backend), [cache](clusters/base/cache) and [database](clusters/base/database).
+
 Each micro-services receives periodically updates via container image releases and configuration changes.
 These updates should be tested in isolation with automated e2e testing. 
-Once the updates are made available to service providers,
-the updates rollout should be gated by conformance tests and exposed to live traffic in a progressive manner,
+Once the updates are made available to service providers, the release on production clusters
+should be gated by conformance tests.
+
+In order to ensure that the service providers SLAs are not being broken by new releases,
+the release process will expose the micro-service new version to live traffic in a progressive manner,
 while measuring the service level objectives (SLOs) like availability, error rate percentage and average response time.
+If a drop in performance is noticed during the SLOs analysis, the release will be automatically rolled back
+with minimum impact to end-users.
 
 ### Kubernetes cluster
 

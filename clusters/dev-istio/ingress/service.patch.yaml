@@ -1,0 +1,6 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ingress
+spec:
+  type: LoadBalancer

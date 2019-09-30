@@ -1,0 +1,7 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: traffic-generator
+spec:
+  suspend: false
+  schedule: "*/1 * * * *"

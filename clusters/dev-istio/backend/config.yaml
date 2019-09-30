@@ -1,0 +1,5 @@
+http-client-timeout: 1m
+http-server-timeout: 2m
+http-server-shutdown-timeout: 5s
+backend-url:
+  - http://database:9898/echo

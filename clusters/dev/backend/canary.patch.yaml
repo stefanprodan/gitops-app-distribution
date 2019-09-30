@@ -1,0 +1,29 @@
+apiVersion: flagger.app/v1alpha3
+kind: Canary
+metadata:
+  name: backend
+spec:
+  canaryAnalysis:
+    interval: 10s
+    threshold: 10
+    iterations: 5
+    metrics:
+    - name: request-success-rate
+      threshold: 99
+      interval: 1m
+    - name: request-duration
+      threshold: 500
+      interval: 30s
+    webhooks:
+      - name: acceptance-test
+        type: pre-rollout
+        url: http://tester.dev/
+        timeout: 30s
+        metadata:
+          type: bash
+          cmd: "curl -sd 'test' http://backend-canary:9898/token | grep token"
+      - name: load-test
+        url: http://tester.dev/
+        timeout: 5s
+        metadata:
+          cmd: "hey -z 1m -q 5 -c 2 http://backend-canary:9898/"

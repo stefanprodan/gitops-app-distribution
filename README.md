@@ -5,7 +5,7 @@ that will host the app on their own Kubernetes clusters e.g. EKS, AKS/Linkerd, G
 The application is composed of several containerized micro-services: [frontend](clusters/base/frontend),
 [backend](clusters/base/backend), [cache](clusters/base/cache) and [database](clusters/base/database).
 
-Each micro-services receives periodically updates via container image releases and configuration changes.
+Each micro-service receives periodically updates via container image releases and configuration changes.
 These updates should be tested in isolation with automated e2e testing. 
 Once the updates are made available to service providers, the release on production clusters
 should be gated by conformance tests.
@@ -15,6 +15,14 @@ the release process will expose the micro-service new version to live traffic in
 while measuring the service level objectives (SLOs) like availability, error rate percentage and average response time.
 If a drop in performance is noticed during the SLOs analysis, the release will be automatically rolled back
 with minimum impact to end-users.
+
+Technical solution:
+* create a repository with the manifests required to distribute the app on Kubernetes
+* create a dedicated distribution for each service provider environment type (Kubernetes without a service mesh, with Istio, with Linkerd)
+* use kustomize to build each environment type while keeping the YAML duplication at minimum
+* use GitHub Actions and Kubernetes Kind to validate changes in all three environments
+* use Flux to distribute changes on the service providers clusters
+* use Flagger to automate the production releases on the service providers clusters
 
 ### Kubernetes cluster
 

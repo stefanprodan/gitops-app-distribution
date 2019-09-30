@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: dev-linkerd
+  name: dev-istio
   annotations:
-    linkerd.io/inject: enabled
+    linkerd.io/inject: disabled
   labels:
-    istio-injection: disabled
-    appmesh.k8s.aws/sidecarInjectorWebhook: enabled
+    istio-injection: enabled
+    appmesh.k8s.aws/sidecarInjectorWebhook: disabled

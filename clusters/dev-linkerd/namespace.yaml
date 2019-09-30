@@ -6,4 +6,4 @@ metadata:
     linkerd.io/inject: enabled
   labels:
     istio-injection: disabled
-    appmesh.k8s.aws/sidecarInjectorWebhook: enabled
+    appmesh.k8s.aws/sidecarInjectorWebhook: disabled

@@ -2,29 +2,37 @@
 
 ## Clusters
 
+Microservices:
+* [frontend](clusters/base/frontend) deployment, hpa, canary
+* [backend](clusters/base/backend) deployment, hpa, canary
+* [cache](clusters/base/cache) deployment, hpa, canary
+* [database](clusters/base/database) deployment, hpa, canary
+* [tester](clusters/base/tester) deployment, ClusterIP service
+* [ingress](clusters/base/ingress) deployment, LoadBalancer service
+
 ### Kuberentes dev
 
-Canary releases
-* [frontend](clusters/dev/frontend) blue/green strategy (conformance and load testing)
-* [backend](clusters/dev/backend) blue/green strategy (conformance and load testing)
-* [cache](clusters/dev/cache) blue/green strategy (conformance and load testing)
-* [database](clusters/dev/database) blue/green strategy (conformance and load testing)
+Canary releases (conformance and load testing)
+* [frontend](clusters/dev/frontend) blue/green strategy 
+* [backend](clusters/dev/backend) blue/green strategy
+* [cache](clusters/dev/cache) blue/green strategy
+* [database](clusters/dev/database) blue/green strategy
 
 ### Istio dev
 
-Canary releases
-* [frontend](clusters/dev-istio/frontend) A/B testing strategy (conformance and load testing)
-* [backend](clusters/dev-istio/backend) progressive traffic strategy (conformance and load testing)
-* [cache](clusters/dev-istio/cache) blue/green strategy (conformance and load testing)
-* [database](clusters/dev-istio/database) traffic mirroring strategy (conformance and load testing)
+Canary releases (conformance and load testing)
+* [frontend](clusters/dev-istio/frontend) A/B testing strategy
+* [backend](clusters/dev-istio/backend) progressive traffic strategy
+* [cache](clusters/dev-istio/cache) blue/green strategy
+* [database](clusters/dev-istio/database) traffic mirroring strategy
 
 ### Linkerd dev
 
-Canary releases
-* [frontend](clusters/dev-linkerd/frontend) progressive traffic strategy (conformance and load testing)
-* [backend](clusters/dev-linkerd/backend) progressive traffic strategy (conformance and load testing)
-* [cache](clusters/dev-linkerd/cache) blue/green strategy (conformance and load testing)
-* [database](clusters/dev-linkerd/database) blue/green strategy (conformance and load testing)
+Canary releases (conformance and load testing)
+* [frontend](clusters/dev-linkerd/frontend) progressive traffic strategy
+* [backend](clusters/dev-linkerd/backend) progressive traffic strategy
+* [cache](clusters/dev-linkerd/cache) blue/green strategy
+* [database](clusters/dev-linkerd/database) blue/green strategy
 
 ## End-to-end testing
 

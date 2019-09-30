@@ -1,0 +1,6 @@
+http-client-timeout: 1m
+http-server-timeout: 1m
+http-server-shutdown-timeout: 5s
+backend-url:
+  - http://backend:9898/echo
+  - http://cache:9898/echo

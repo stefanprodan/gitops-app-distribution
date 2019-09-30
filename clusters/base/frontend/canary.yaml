@@ -1,0 +1,17 @@
+apiVersion: flagger.app/v1alpha3
+kind: Canary
+metadata:
+  name: frontend
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  progressDeadlineSeconds: 60
+  autoscalerRef:
+    apiVersion: autoscaling/v2beta1
+    kind: HorizontalPodAutoscaler
+    name: frontend
+  service:
+    port: 9898
+    portDiscovery: true

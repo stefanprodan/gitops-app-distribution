@@ -1,0 +1,37 @@
+name: CI
+
+on: [push]
+
+jobs:
+  dev-e2e-kubernetes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: ci/e2e-kubeval.sh dev
+      - uses: engineerd/setup-kind@v0.1.0
+      - run: ci/e2e-flagger.sh
+      - run: ci/e2e-test.sh dev
+      - if: failure()
+        run: ci/e2e-logs.sh
+  dev-e2e-linkerd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: ci/e2e-kubeval.sh dev-linkerd
+      - uses: engineerd/setup-kind@v0.1.0
+      - run: ci/e2e-linkerd.sh
+      - run: ci/e2e-flagger.sh linkerd
+      - run: ci/e2e-test.sh dev-linkerd
+      - if: failure()
+        run: ci/e2e-logs.sh linkerd
+  dev-e2e-istio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: ci/e2e-kubeval.sh dev-istio
+      - uses: engineerd/setup-kind@v0.1.0
+      - run: ci/e2e-istio.sh
+      - run: ci/e2e-flagger.sh istio
+      - run: ci/e2e-test.sh dev-istio
+      - if: failure()
+        run: ci/e2e-logs.sh istio

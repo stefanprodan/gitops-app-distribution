@@ -1,0 +1,6 @@
+namespace: test
+resources:
+  - service.yaml
+  - deployment.yaml
+  - cron.yaml
+  - job.yaml

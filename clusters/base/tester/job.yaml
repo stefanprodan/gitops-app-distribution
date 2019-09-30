@@ -1,0 +1,41 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: traffic-tester
+spec:
+  suspend: true
+  concurrencyPolicy: Replace
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            linkerd.io/inject: disabled
+            sidecar.istio.io/inject: "false"
+            appmesh.k8s.aws/sidecarInjectorWebhook: disabled
+        spec:
+          containers:
+          - name: tools
+            image: weaveworks/flagger-loadtester:0.8.0
+            env:
+              - name: K8S_NAMESPACE
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+            command:
+              - bash
+              - -c
+              - |
+                echo "testing ingress"
+                curl --connect-timeout 2 -sd 'test' http://ingress.${K8S_NAMESPACE}.svc.cluster.local/token | grep token
+
+                for WORKLOAD in frontend backend cache database
+                do
+                  echo "testing ${WORKLOAD}"
+                  curl --connect-timeout 2 -s http://${WORKLOAD}.${K8S_NAMESPACE}.svc.cluster.local:9898/version
+                  echo ""
+                done
+          restartPolicy: Never

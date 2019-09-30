@@ -1,0 +1,44 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: traffic-generator
+spec:
+  concurrencyPolicy: Replace
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            linkerd.io/inject: disabled
+            sidecar.istio.io/inject: "false"
+            appmesh.k8s.aws/sidecarInjectorWebhook: disabled
+        spec:
+          containers:
+          - name: tools
+            image: weaveworks/flagger-loadtester:0.8.0
+            env:
+              - name: K8S_NAMESPACE
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+            command:
+              - bash
+              - -c
+              - |
+                JSON=$(cat <<-END
+                    {
+                        "name": "${HOSTNAME}",
+                        "namespace": "${K8S_NAMESPACE}",
+                        "phase": "Progressing",
+                        "metadata": {
+                            "cmd": "hey -z 1m -q 1 -c 1 -m POST -d 'test' http://ingress/echo",
+                            "type": "cmd",
+                            "logCmdOutput" : "true"
+                        }
+                    }
+                END
+                ) && curl --connect-timeout 2 -sd "$JSON" http://tester.${K8S_NAMESPACE}.svc.cluster.local
+          restartPolicy: Never

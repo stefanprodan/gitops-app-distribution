@@ -17,13 +17,13 @@ spec:
     webhooks:
       - name: acceptance-test
         type: pre-rollout
-        url: http://tester.dev/
+        url: http://tester.dev-linkerd.svc.cluster.local/
         timeout: 30s
         metadata:
           type: bash
           cmd: "curl -sd 'test' http://database-canary:9898/token | grep token"
       - name: load-test
-        url: http://tester.dev/
+        url: http://tester.dev-linkerd.svc.cluster.local/
         timeout: 5s
         metadata:
           cmd: "hey -z 1m -q 5 -c 2 http://database-canary:9898/"

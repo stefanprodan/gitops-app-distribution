@@ -6,7 +6,7 @@ export KUBECONFIG="$(kind get kubeconfig-path)"
 ENV=$1
 
 echo ">>> Apply state"
-kubectl apply -k ${ENV}
+kubectl apply -k cluster/${ENV}
 
 function onexit()
 {

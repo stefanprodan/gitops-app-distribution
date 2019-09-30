@@ -1,14 +1,16 @@
 # gitops-multi-cluster
 
-Microservices:
-* [frontend](clusters/base/frontend) deployment, hpa, canary
-* [backend](clusters/base/backend) deployment, hpa, canary
-* [cache](clusters/base/cache) deployment, hpa, canary
-* [database](clusters/base/database) deployment, hpa, canary
-* [tester](clusters/base/tester) deployment, ClusterIP service
-* [ingress](clusters/base/ingress) deployment, LoadBalancer service
+As a software vendor I want to distribute my application in a reliable manner to service providers
+that will host the app on their own Kubernetes clusters e.g. EKS, AKS/Linkerd, GKE/Istio.
+The application is composed of several micro-services: [frontend](clusters/base/frontend),
+[backend](clusters/base/backend), [cache](clusters/base/cache) and [database](clusters/base/database).
+Each micro-services receives periodically updates via container image releases and configuration changes.
+These updates should be tested in isolation with automated e2e testing. 
+Once the updates are made available to service providers,
+the updates rollout should be gated by conformance tests and exposed to live traffic in a progressive manner,
+while measuring the service level objectives (SLOs) like availability, error rate percentage and average response time.
 
-### Kubernetes
+### Kubernetes cluster
 
 Prerequisites:
 ```sh
@@ -21,7 +23,7 @@ Canary releases (conformance and load testing)
 * [cache](clusters/dev/cache) blue/green strategy
 * [database](clusters/dev/database) blue/green strategy
 
-### Istio
+### Istio cluster
 
 Prerequisites:
 ```sh
@@ -37,7 +39,7 @@ Canary releases (conformance and load testing)
 * [cache](clusters/dev-istio/cache) blue/green strategy
 * [database](clusters/dev-istio/database) traffic mirroring strategy
 
-### Linkerd
+### Linkerd cluster
 
 Prerequisites:
 ```sh

@@ -25,13 +25,15 @@ Technical solution:
     * [Kubernetes without a service mesh](dist/app-kubernetes/README.md)
     * [Kubernetes with Istio](dist/app-istio/README.md)
     * [Kubernetes with Linkerd](dist/app-linkerd/README.md)
-* use kustomize to build each environment type (distribution) while keeping the YAML duplication at minimum
+* use Kustomize to build each environment type (distribution) while keeping the YAML duplication at minimum
 * use GitHub Actions and Kubernetes Kind to validate changes
     * validate manifests with kubeval
     * end-to-end testing for Kubernetes, Istio and Linkerd distributions
-* use Flux to distribute changes on the service providers clusters
-* use Flagger to automate the production releases on the service providers clusters
-    * run conformance tests before exposing a micro-service to live traffic
+* use [Flux](https://fluxcd.io) to distribute changes on the service providers clusters
+    * reconcile a target cluster with an app distribution
+    * monitor the base distribution and update the target cluster on spec changes
+* use [Flagger](https://flagger.app) to automate the production releases on the service providers clusters
+    * run conformance tests before exposing an updated micro-service to live traffic
     * run canary style deployments with progressive traffic shifting for _frontend_ and _backend_ micro-services
     * run blue/green style deployments for _cache_ and _database_ micro-services
 

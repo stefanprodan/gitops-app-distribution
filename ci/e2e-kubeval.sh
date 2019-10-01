@@ -15,4 +15,4 @@ tar xf kubeval-linux-amd64.tar.gz
 sudo mv kubeval /usr/local/bin
 
 echo ">>> Validate kustomize build"
-kubectl kustomize clusters/${ENV} | kubeval --strict --ignore-missing-schemas
+kubectl kustomize dist/${ENV} | kubeval --strict --ignore-missing-schemas

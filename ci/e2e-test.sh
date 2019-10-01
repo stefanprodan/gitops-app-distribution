@@ -10,7 +10,7 @@ ENV=${1:-$env}
 NS=${2:-$namespace}
 
 echo ">>> Apply state"
-kubectl apply -k clusters/${ENV}
+kubectl apply -k dist/${ENV}
 
 function onexit()
 {

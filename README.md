@@ -72,3 +72,29 @@ commandUpdated:
   generators:
     - command: kustomize build .
 ```
+
+## Change management
+
+Let's assume the vendor wants to release a new frontend version that requires 
+configuration changes as well as a container image update.
+
+Vendor workflow:
+* the frontend team releases a new container image tagged `frontend:v2.0.0`
+* the frontend teams creates a PR with the frontend image tag and configuration file changes
+* the PR is being validated in CI with e2e tests for all distributions (Kubernetes, Istio, Linkerd)
+* the PR is merged into master followed by a GitHub release e.g. `1.1.0`
+
+Service provider workflow:
+* the provider is notified about the update
+* the provider create a PR on one of the production cluster git repos and changes the base to `dist//app-istio?ref=1.1.0`
+* the PR is being validated in CI with e2e tests for the Istio distribution
+* the PR is merged into master
+* Flux detects the changes in git and fetches the upstream manifests
+* Flux applies the kustomization on the cluster
+* Flagger detects that the frontend image and configuration file has changed
+* Flagger runs the conformance tests for the frontend micro-service
+* Flagger starts to gradually shift traffic towards the new frontend version
+* Flagger runs the canary analysis and validates the service level objectives (SLOs)
+* Flagger promotes the new frontend version by upgrading the config and rolling the v2 image in production
+* Flagger notifies the service provider on Slack or MS Teams that frontend was updated
+

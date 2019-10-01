@@ -18,66 +18,13 @@ with minimum impact to end-users.
 
 Technical solution:
 * create a repository with the manifests required to distribute the app on Kubernetes
-* create a dedicated distribution for each service provider environment type (Kubernetes without a service mesh, with Istio, with Linkerd)
+* create a dedicated distribution for each service provider environment type
+    * [Kubernetes without a service mesh](clusters/app-kubernetes/README.md)
+    * [Kubernetes with Istio](clusters/app-istio/README.md)
+    * [Kubernetes with Linkerd](clusters/app-linkerd/README.md)
 * use kustomize to build each environment type while keeping the YAML duplication at minimum
 * use GitHub Actions and Kubernetes Kind to validate changes in all three environments
 * use Flux to distribute changes on the service providers clusters
 * use Flagger to automate the production releases on the service providers clusters
 
-### Kubernetes cluster
-
-Prerequisites:
-```sh
-kubectl apply -k github.com/weaveworks/flagger//kustomize/kubernetes
-```
-
-Canary releases (conformance and load testing)
-* [frontend](clusters/app-kubernetes/frontend) blue/green strategy 
-* [backend](clusters/app-kubernetes/backend) blue/green strategy
-* [cache](clusters/app-kubernetes/cache) blue/green strategy
-* [database](clusters/app-kubernetes/database) blue/green strategy
-
-### Istio cluster
-
-Prerequisites:
-```sh
-helm upgrade -i istio-init istio.io/istio-init --wait --namespace istio-system
-helm upgrade -i istio istio.io/istio --wait --namespace istio-system
-
-kubectl apply -k github.com/weaveworks/flagger//kustomize/istio
-```
-
-Canary releases (conformance and load testing)
-* [frontend](clusters/app-istio/frontend) a/b testing strategy
-* [backend](clusters/app-istio/backend) progressive traffic strategy
-* [cache](clusters/app-istio/cache) blue/green strategy
-* [database](clusters/app-istio/database) traffic mirroring strategy
-
-### Linkerd cluster
-
-Prerequisites:
-```sh
-linkerd install | kubectl apply -f -
-
-kubectl apply -k github.com/weaveworks/flagger//kustomize/linkerd
-```
-
-Canary releases (conformance and load testing)
-* [frontend](clusters/app-linkerd/frontend) progressive traffic strategy
-* [backend](clusters/app-linkerd/backend) progressive traffic strategy
-* [cache](clusters/app-linkerd/cache) blue/green strategy
-* [database](clusters/app-linkerd/database) blue/green strategy
-
-### End-to-end testing
-
-The e2e testing is powered by GitHub Actions and Kubernetes Kind.
-
-[Workflow](.github/workflows/main.yml)
-* validate manifests with kustomize build and kubeval
-* provision Kubernetes Kind cluster
-* install Linkerd and Istio
-* install Flagger
-* apply manifests on the cluster
-* test the workloads initialization
-* test communication between microservices
 

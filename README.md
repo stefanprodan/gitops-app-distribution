@@ -39,6 +39,8 @@ Technical solution:
 
 ## Distribution
 
+![GitOps](docs/diagrams/gitops-dist-overview.png)
+
 A service provider will use Kustomize and FluxCD to deploy the app on production clusters.
 
 Git repository structure:

@@ -2,8 +2,8 @@
 
 As a software vendor I want to distribute my application in a reliable manner to service providers
 that will host the app on their own Kubernetes clusters e.g. EKS, AKS/Linkerd, GKE/Istio.
-The application is composed of several containerized micro-services: [frontend](clusters/base/frontend),
-[backend](clusters/base/backend), [cache](clusters/base/cache) and [database](clusters/base/database).
+The application is composed of several containerized micro-services: [frontend](dist/base/frontend),
+[backend](dist/base/backend), [cache](dist/base/cache) and [database](dist/base/database).
 
 Each micro-service receives periodically updates via container image releases and configuration changes.
 These updates should be tested in isolation with automated e2e testing. 
@@ -19,9 +19,9 @@ with minimum impact to end-users.
 Technical solution:
 * create a repository with the manifests required to distribute the app on Kubernetes
 * create a dedicated distribution for each service provider environment type
-    * [Kubernetes without a service mesh](clusters/app-kubernetes/README.md)
-    * [Kubernetes with Istio](clusters/app-istio/README.md)
-    * [Kubernetes with Linkerd](clusters/app-linkerd/README.md)
+    * [Kubernetes without a service mesh](dist/app-kubernetes/README.md)
+    * [Kubernetes with Istio](dist/app-istio/README.md)
+    * [Kubernetes with Linkerd](dist/app-linkerd/README.md)
 * use kustomize to build each environment type while keeping the YAML duplication at minimum
 * use GitHub Actions and Kubernetes Kind to validate changes in all three environments
 * use Flux to distribute changes on the service providers clusters

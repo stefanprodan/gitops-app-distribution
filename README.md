@@ -2,9 +2,9 @@
 
 As a software vendor I want to distribute my application in a reliable manner to service providers
 that will host the app on their own Kubernetes clusters e.g. EKS, AKS/Linkerd, GKE/Istio.
+
 The application is composed of several containerized micro-services: [frontend](dist/base/frontend),
 [backend](dist/base/backend), [cache](dist/base/cache) and [database](dist/base/database).
-
 Each micro-service receives periodically updates via container image releases and configuration changes.
 These updates should be tested in isolation with automated e2e testing. 
 Once the updates are made available to service providers, the release on production clusters
@@ -15,6 +15,9 @@ the release process will expose a micro-service new version to live traffic in a
 while measuring the service level objectives (SLOs) like availability, error rate percentage and average response time.
 If a drop in performance is noticed during the SLOs analysis, the release will be automatically rolled back
 with minimum impact to end-users.
+
+Service providers should have the option to customize the app to fit their SLAs e.g. set different 
+resources requests and limits, tweak the auto-scaling thresholds or manual approval of canary releases.
 
 Technical solution:
 * create a repository with the manifests required to distribute the app on Kubernetes

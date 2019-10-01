@@ -1,0 +1,63 @@
+static_resources:
+  listeners:
+    - address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 8080
+      filter_chains:
+        - filters:
+            - name: envoy.http_connection_manager
+              config:
+                access_log:
+                  - name: envoy.file_access_log
+                    config:
+                      path: /dev/stdout
+                codec_type: auto
+                stat_prefix: ingress_http
+                http_filters:
+                  - name: envoy.router
+                    config: {}
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                    - name: local_service
+                      domains: ["*"]
+                      request_headers_to_add:
+                        - header:
+                            key: l5d-dst-override
+                            value: frontend.app.svc.cluster.local:9898
+                      request_headers_to_remove:
+                        - l5d-remote-ip
+                        - l5d-server-id
+                      routes:
+                        - match:
+                            prefix: "/"
+                          route:
+                            cluster: frontend
+                            host_rewrite: frontend.app
+                            timeout: 15s
+                            retry_policy:
+                              retry_on: "gateway-error,connect-failure,refused-stream"
+                              num_retries: 10
+                              per_try_timeout: 5s
+  clusters:
+    - name: frontend
+      connect_timeout: 0.30s
+      type: strict_dns
+      lb_policy: round_robin
+      load_assignment:
+        cluster_name: frontend
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: frontend.app.svc.cluster.local
+                      port_value: 9898
+
+admin:
+  access_log_path: /dev/null
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9999

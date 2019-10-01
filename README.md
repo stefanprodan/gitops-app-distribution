@@ -32,10 +32,10 @@ kubectl apply -k github.com/weaveworks/flagger//kustomize/kubernetes
 ```
 
 Canary releases (conformance and load testing)
-* [frontend](clusters/dev/frontend) blue/green strategy 
-* [backend](clusters/dev/backend) blue/green strategy
-* [cache](clusters/dev/cache) blue/green strategy
-* [database](clusters/dev/database) blue/green strategy
+* [frontend](clusters/app-kubernetes/frontend) blue/green strategy 
+* [backend](clusters/app-kubernetes/backend) blue/green strategy
+* [cache](clusters/app-kubernetes/cache) blue/green strategy
+* [database](clusters/app-kubernetes/database) blue/green strategy
 
 ### Istio cluster
 
@@ -48,10 +48,10 @@ kubectl apply -k github.com/weaveworks/flagger//kustomize/istio
 ```
 
 Canary releases (conformance and load testing)
-* [frontend](clusters/dev-istio/frontend) a/b testing strategy
-* [backend](clusters/dev-istio/backend) progressive traffic strategy
-* [cache](clusters/dev-istio/cache) blue/green strategy
-* [database](clusters/dev-istio/database) traffic mirroring strategy
+* [frontend](clusters/app-istio/frontend) a/b testing strategy
+* [backend](clusters/app-istio/backend) progressive traffic strategy
+* [cache](clusters/app-istio/cache) blue/green strategy
+* [database](clusters/app-istio/database) traffic mirroring strategy
 
 ### Linkerd cluster
 
@@ -63,10 +63,10 @@ kubectl apply -k github.com/weaveworks/flagger//kustomize/linkerd
 ```
 
 Canary releases (conformance and load testing)
-* [frontend](clusters/dev-linkerd/frontend) progressive traffic strategy
-* [backend](clusters/dev-linkerd/backend) progressive traffic strategy
-* [cache](clusters/dev-linkerd/cache) blue/green strategy
-* [database](clusters/dev-linkerd/database) blue/green strategy
+* [frontend](clusters/app-linkerd/frontend) progressive traffic strategy
+* [backend](clusters/app-linkerd/backend) progressive traffic strategy
+* [cache](clusters/app-linkerd/cache) blue/green strategy
+* [database](clusters/app-linkerd/database) blue/green strategy
 
 ### End-to-end testing
 

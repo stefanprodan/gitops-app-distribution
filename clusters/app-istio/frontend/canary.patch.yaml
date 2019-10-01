@@ -1,0 +1,36 @@
+apiVersion: flagger.app/v1alpha3
+kind: Canary
+metadata:
+  name: frontend
+spec:
+  canaryAnalysis:
+    interval: 10s
+    threshold: 10
+    iterations: 10
+    match:
+      - headers:
+          user-agent:
+            regex: "^(?!.*Chrome)(?=.*\bSafari\b).*$"
+      - headers:
+          cookie:
+            regex: "^(.*?;)?(type=insider)(;.*)?$"
+    metrics:
+    - name: request-success-rate
+      threshold: 70
+      interval: 1m
+    - name: request-duration
+      threshold: 500
+      interval: 1m
+    webhooks:
+      - name: acceptance-test
+        type: pre-rollout
+        url: http://tester.app.svc.cluster.local/
+        timeout: 30s
+        metadata:
+          type: bash
+          cmd: "curl -sd 'test' http://frontend-canary:9898/token | grep token"
+      - name: load-test
+        url: http://tester.app.svc.cluster.local/
+        timeout: 5s
+        metadata:
+          cmd: "hey -z 1m -q 5 -c 2 -H 'Cookie: type=insider' http://frontend:9898/"

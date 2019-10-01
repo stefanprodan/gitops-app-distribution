@@ -27,8 +27,8 @@ Technical solution:
     * [Kubernetes with Linkerd](dist/app-linkerd/README.md)
 * use Kustomize to build each environment type (distribution) while keeping the YAML duplication at minimum
 * use GitHub Actions and Kubernetes Kind to validate changes
-    * validate manifests with kubeval
-    * end-to-end testing for Kubernetes, Istio and Linkerd distributions
+    * [validate manifests](ci/e2e-kubeval.sh) with kubeval
+    * [end-to-end testing](.github/workflows/main.yml) for Kubernetes, Istio and Linkerd distributions
 * use [Flux](https://fluxcd.io) to distribute changes on the service providers clusters
     * reconcile a target cluster with an app distribution
     * monitor the base distribution and update the target cluster on spec changes

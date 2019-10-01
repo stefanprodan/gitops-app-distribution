@@ -3,8 +3,11 @@
 set -o errexit
 
 export KUBECONFIG="$(kind get kubeconfig-path)"
-ENV=$1
-NS=$2:-app
+
+env=app-kubernetes
+namespace=app
+ENV=${1:-$env}
+NS=${2:-$namespace}
 
 echo ">>> Apply state"
 kubectl apply -k clusters/${ENV}

@@ -1,4 +1,4 @@
-# gitops-multi-cluster
+# gitops-app-distribution
 
 As a software vendor I want to distribute my application in a reliable manner to service providers
 that will host the app on their own Kubernetes clusters e.g. EKS, AKS/Linkerd, GKE/Istio.
@@ -22,9 +22,14 @@ Technical solution:
     * [Kubernetes without a service mesh](dist/app-kubernetes/README.md)
     * [Kubernetes with Istio](dist/app-istio/README.md)
     * [Kubernetes with Linkerd](dist/app-linkerd/README.md)
-* use kustomize to build each environment type while keeping the YAML duplication at minimum
+* use kustomize to build each environment type (distribution) while keeping the YAML duplication at minimum
 * use GitHub Actions and Kubernetes Kind to validate changes in all three environments
+    * validate manifests with kubeval
+    * deploy each distribution on Kubernetes Kind
+    * end-to-end testing for Kubernetes, Istio and Linkerd distributions
 * use Flux to distribute changes on the service providers clusters
 * use Flagger to automate the production releases on the service providers clusters
-
+    * run conformance tests before exposing a micro-service to live traffic
+    * run canary style deployments with progressive traffic shifting for _frontend_ and _backend_ micro-services
+    * run blue/green style deployments for _cache_ and _database_ micro-services
 

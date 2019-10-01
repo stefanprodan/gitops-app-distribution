@@ -21,7 +21,7 @@ The e2e testing is powered by GitHub Actions and Kubernetes Kind.
 Workflow
 * validate manifests with kustomize build and kubeval
 * provision Kubernetes Kind cluster
-* install Flagger
+* install Flagger and Prometheus
 * apply manifests on the cluster
 * test the workloads initialization
 * test communication between microservices
